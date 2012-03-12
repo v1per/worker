@@ -3,6 +3,7 @@ import logging
 
 log = logging.getLogger()
 
+
 class WorkerPool(object): 
     def __init__(self, task, in_data, count=1):
         self.task = task
@@ -45,12 +46,14 @@ class WorkerPool(object):
 if __name__ == '__main__':
     import time
     
-    def wait(data):
-        print "Waiting task: %s" % data
-        time.sleep(30)
+    def task(data):
+        print "Processing data: %s" % data
+        time.sleep(5)
+
+    data = range(10)
 
     start = time.time()
-    worker_pool = WorkerPool(wait, range(10), 5)
+    worker_pool = WorkerPool(task, data, count=5)
     worker_pool.work()
     end = time.time()
 
@@ -58,12 +61,10 @@ if __name__ == '__main__':
                                                         (end - start) % 60)
 
     start = time.time()
-    for i in range(10):
-        wait(i)
+    for i in data:
+        task(i)
     end = time.time()
 
     print "Execution time by loop: %dm and %ds" % ((end - start) / 60, 
                                                    (end - start) % 60)
-
-
 
